@@ -1036,3 +1036,81 @@ footer > span {
     animation: none !important;
   }
 }
+
+/* MausamGuard workflow polish */
+.heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.heading-actions [data-slot='button']:first-child {
+  box-shadow: 0 8px 20px rgb(23 104 223 / 18%);
+}
+.source-strip {
+  box-shadow: 0 3px 10px rgb(28 68 112 / 5%);
+}
+.stats {
+  box-shadow: 0 4px 16px rgb(27 61 100 / 5%);
+}
+.chart-panel {
+  box-shadow: 0 8px 24px rgb(27 61 100 / 6%);
+}
+.chart {
+  height: 330px;
+  background: linear-gradient(180deg, rgb(234 242 255 / 28%), transparent 42%);
+  border-radius: 8px;
+}
+.experiment-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 10px;
+  margin: -5px 0 21px;
+  background: #edf4ff;
+  border: 1px solid #d8e6f8;
+  border-radius: 8px;
+}
+.experiment-summary span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.experiment-summary strong {
+  overflow: hidden;
+  color: #175cc0;
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.experiment-summary small {
+  color: #67809a;
+  font-size: 0.68rem;
+}
+.stat-alert {
+  border-left: 3px solid #d88116;
+}
+@media (max-width: 850px) {
+  .heading-actions {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 550px) {
+  .page-heading {
+    align-items: flex-start;
+  }
+  .heading-actions {
+    width: 100%;
+  }
+  .heading-actions [data-slot='button'] {
+    flex: 1;
+  }
+  .chart {
+    height: 280px;
+  }
+  .experiment-summary {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}

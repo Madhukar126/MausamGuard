@@ -151,6 +151,12 @@ export default function Home() {
         .reverse(),
     [analysis, method, visibleEnd],
   );
+  const reviewedCount = alertIndices.filter((i) => reviews[i]).length;
+  const startReplay = () => {
+    if (cursor >= rows.length) setCursor(analysis.testStart + 1);
+    setSelected(null);
+    setPlaying(true);
+  };
   const active =
       selected !== null && selected < visibleEnd ? selected : alertIndices[0],
     finding = active === undefined ? null : analysis.results[method][active];
@@ -397,10 +403,16 @@ export default function Home() {
             <h1>Trust the observation.</h1>
             <p>Inspect sensor behaviour. Test faults. Compare the evidence.</p>
           </div>
-          <Button variant="outline" onClick={exportReport}>
-            <ArrowDownToLine />
-            Export report
-          </Button>
+          <div className="heading-actions">
+            <Button onClick={playing ? () => setPlaying(false) : startReplay}>
+              {playing ? <Pause /> : <Play />}
+              {playing ? 'Pause replay' : 'Replay test period'}
+            </Button>
+            <Button variant="outline" onClick={exportReport}>
+              <ArrowDownToLine />
+              Export report
+            </Button>
+          </div>
         </section>
         <div className="source-strip">
           <div>
@@ -490,13 +502,13 @@ export default function Home() {
                   <CircleHelp />
                   Alert events
                 </span>
-                <strong>
-                  {metrics.alerts}
-                  <small>for review</small>
-                </strong>
-                <p>
-                  {alertIndices.length} flagged observations · {names[method]}
-                </p>
+                  <strong>
+                    {alertIndices.length}
+                    <small>flagged</small>
+                  </strong>
+                  <p>
+                    {reviewedCount} reviewed · {alertIndices.length - reviewedCount} pending · {names[method]}
+                  </p>
               </article>
             </section>
             <div className="monitor-grid">
@@ -625,12 +637,7 @@ export default function Home() {
                   <Button
                     onClick={() => {
                       if (playing) setPlaying(false);
-                      else {
-                        if (cursor >= rows.length)
-                          setCursor(analysis.testStart + 1);
-                        setSelected(null);
-                        setPlaying(true);
-                      }
+                      else startReplay();
                     }}
                   >
                     {playing ? <Pause /> : <Play />}
@@ -679,6 +686,11 @@ export default function Home() {
                   Only complete test rows labelled normal are changed. Unknown,
                   faulty and missing readings stay untouched.
                 </p>
+                <div className="experiment-summary" aria-label="Current experiment">
+                  <span><strong>{scenarioNames[scenario]}</strong><small>Scenario</small></span>
+                  <span><strong>{channelNames[channel]}</strong><small>Sensor</small></span>
+                  <span><strong>{severity} / 5</strong><small>Magnitude</small></span>
+                </div>
                 <Picker
                   label="Scenario"
                   value={scenario}
